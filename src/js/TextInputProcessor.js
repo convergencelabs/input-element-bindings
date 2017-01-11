@@ -9,7 +9,7 @@ export class TextInputProcessor {
         element.type !== "url" &&
         element.type !== "tel" &&
         element.type !== "search" &&
-        element.type !== "password" ) {
+        element.type !== "password") {
         throw new Error(`HTMLInputElement must of of type 'text', 'url', 'tel', or 'search': ${element.type}`);
       }
     } else if (!(element instanceof HTMLTextAreaElement)) {
