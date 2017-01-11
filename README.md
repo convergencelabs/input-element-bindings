@@ -57,6 +57,9 @@ or
 </html>
 ```
 
+## Documentation
+For now the best way to see how to use the utility is to take a look at the [example](example)
+
 ## API
 ```javascript
 function bindTextInput(textInput, stringElement)
