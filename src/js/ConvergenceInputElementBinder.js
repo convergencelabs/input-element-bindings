@@ -21,10 +21,7 @@ export function bindTextInput(textInput, stringElement) {
 
   const onRemoteInsert = event => {
     if (!event.local) {
-      const oldVal = textInput.value;
-      textInput.value = oldVal.substring(0, event.index) +
-        event.value +
-        oldVal.substring(event.index, oldVal.length);
+      processor.insertText(event.index, event.value);
     }
   };
 
@@ -32,16 +29,14 @@ export function bindTextInput(textInput, stringElement) {
 
   const onRemoteRemove = event => {
     if (!event.local) {
-      const oldVal = textInput.value;
-      textInput.value = oldVal.substring(0, event.index) +
-        oldVal.substring(event.index + event.value.length, oldVal.length);
+      processor.removeText(event.index, event.value.length);
     }
   };
 
   stringElement.on(RealTimeString.Events.REMOVE, onRemoteRemove);
 
   const onRemoteValue = event => {
-    if (!event.local) textInput.value = event.value;
+    if (!event.local) processor.setValue(event.value);
   };
 
   stringElement.on(RealTimeString.Events.VALUE, onRemoteValue);

@@ -36,6 +36,27 @@ export class TextInputProcessor {
     this._input.removeEventListener(this._event, this._listener);
   }
 
+  insertText(index, value) {
+    const oldVal = this._input.value;
+    const newVal =
+      oldVal.substring(0, index) +
+      value +
+      oldVal.substring(index, oldVal.length);
+    this.setValue(newVal);
+  }
+
+  removeText(index, length) {
+    const oldVal = this._input.value;
+    const newVal = oldVal.substring(0, index) +
+      oldVal.substring(index + length, oldVal.length);
+    this.setValue(newVal);
+  }
+
+  setValue(value) {
+    this._input.value = value;
+    this._oldValue = value;
+  }
+
   _onEvent() {
     const newValue = this._input.value;
 
