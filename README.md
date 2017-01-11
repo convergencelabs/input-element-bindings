@@ -3,23 +3,23 @@
 
 This module provides a set of utilities to bind plain HTML Input / Form Elements to a Convergence model. The module provides simple two way data binding between the HTML input element and a particular field in the Convergence data model. The module currently supports the following input elements:
 
-- Text Input Fields
-  - <input type="text" />
-  - <input type="password" />
-  - <input type="email" />
-  - <input type="url" />
-  - <input type="search" />
-  - <textarea />
+* Text Input Fields
+  * &lt;input type="text" /&gt;
+  * &lt;input type="password" /&gt;
+  * &lt;input type="email" /&gt;
+  - &lt;input type="url" /&gt;
+  - &lt;input type="search" /&gt;
+  - &lt;textarea /&gt;
 - Radio Buttons
-  - <input type="radio" />
+  - &lt;input type="radio" /&gt;
 - Select Elements
-  - <select />
-  - <select multiple /> 
+  - &lt;select /&gt;
+  - &lt;select multiple /&gt; 
 - Color Selector
-  - <input type="color" />
+  - &lt;input type="color" /&gt;
 - Number Fields
-  - <input type="number" />
-  - <input type="range" />
+  - &lt;input type="number" /&gt;
+  - &lt;input type="range" /&gt;
 
 ## Installation
 ```npm install --save @convergence/input-element-bindings```
