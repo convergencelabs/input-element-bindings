@@ -1,4 +1,5 @@
 import {resolveElement} from "./ElementUtils";
+import StringChangeDetector from "@convergence/string-change-detector";
 
 export class TextInputProcessor {
   constructor(options) {
@@ -17,12 +18,13 @@ export class TextInputProcessor {
     }
 
     this._input = element;
-
-    this._onInsert = options.onInsert;
-    this._onRemove = options.onRemove;
     this._event = options.event || "input";
 
-    this._oldValue = this._input.value;
+    this._detector = new StringChangeDetector({
+      value: this._input.value,
+      onInsert: options.onInsert,
+      onRemove: options.onRemove
+    });
     this._listener = this._onEvent.bind(this);
 
     this.bind();
@@ -37,61 +39,21 @@ export class TextInputProcessor {
   }
 
   insertText(index, value) {
-    const oldVal = this._input.value;
-    const newVal =
-      oldVal.substring(0, index) +
-      value +
-      oldVal.substring(index, oldVal.length);
-    this.setValue(newVal);
+    this._detector.insertText(index, value);
+    this._input.value = this._detector.getValue();
   }
 
   removeText(index, length) {
-    const oldVal = this._input.value;
-    const newVal = oldVal.substring(0, index) +
-      oldVal.substring(index + length, oldVal.length);
-    this.setValue(newVal);
+    this._detector.removeText(index, length);
+    this._input.value = this._detector.getValue();
   }
 
   setValue(value) {
     this._input.value = value;
-    this._oldValue = value;
+    this._detector.setValue(value);
   }
 
   _onEvent() {
-    const newValue = this._input.value;
-
-    let commonEnd = 0;
-    let commonStart = 0;
-
-    if (this._oldValue === newValue) {
-      return;
-    }
-
-    while (this._oldValue.charAt(commonStart) === newValue.charAt(commonStart)) {
-      commonStart++;
-    }
-
-    while (this._oldValue.charAt(this._oldValue.length - 1 - commonEnd) ===
-        newValue.charAt(newValue.length - 1 - commonEnd) &&
-        commonEnd + commonStart < this._oldValue.length &&
-        commonEnd + commonStart < newValue.length) {
-      commonEnd++;
-    }
-
-    // Characters were removed.
-    if (this._oldValue.length !== commonStart + commonEnd) {
-      if (this._onRemove) {
-        this._onRemove(commonStart, this._oldValue.length - commonStart - commonEnd);
-      }
-    }
-
-    // Characters were added
-    if (newValue.length !== commonStart + commonEnd) {
-      if (this._onInsert) {
-        this._onInsert(commonStart, newValue.slice(commonStart, (newValue.length - commonEnd)));
-      }
-    }
-
-    this._oldValue = newValue;
+    this._detector.processNewValue(this._input.value);
   }
 }

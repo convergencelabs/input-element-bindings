@@ -26,7 +26,7 @@ gulp.task('default', ['build'], function () {
 gulp.task('build', ['babel-cjs', 'test', 'minify-umd'], function () {
 });
 
-gulp.task('dist', ['build', 'copy-files'], function () {
+gulp.task('dist', ['build', 'copy-files', 'copy-types'], function () {
   const packageJson = require("./dist/package.json");
   if (packageJson.version.endsWith('SNAPSHOT')) {
     return gulp.src(`${distDir}/package.json`)
@@ -38,6 +38,11 @@ gulp.task('dist', ['build', 'copy-files'], function () {
 gulp.task('copy-files', ['build'], function () {
   return gulp.src(["build/**/*", "README.md", "LICENSE.txt", 'package.json'])
     .pipe(gulp.dest(distDir));
+});
+
+gulp.task('copy-types',  function () {
+  return gulp.src(["src/types/**/*"])
+    .pipe(gulp.dest(distDir + "/types/"));
 });
 
 gulp.task('webpack-umd', function () {

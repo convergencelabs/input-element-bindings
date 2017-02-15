@@ -8,7 +8,7 @@
     "element",
     "bindings"
   ],
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "http://convergencelabs.com",
   "author": {
     "name": "Convergence Labs, Inc.",
@@ -34,10 +34,11 @@
     "access": "public"
   },
   "main": "lib/index.js",
-  "browser": "browser/color-assigner.js",
+  "browser": "browser/convergence-input-element-bindings.js",
   "types": "types/index.d.ts",
   "dependencies": {
-    "@convergence/convergence": "1.0.0-alpha.1"
+    "@convergence/convergence": "1.0.0-alpha.1",
+    "@convergence/string-change-detector": "0.1.1"
   },
   "devDependencies": {
     "babel-eslint": "6.1.2",
@@ -52,7 +53,7 @@
     "gulp-babel": "6.1.2",
     "gulp-bump": "2.4.0",
     "gulp-clean-css": "2.0.12",
-    "gulp-concat": "^2.6.1",
+    "gulp-concat": "2.6.1",
     "gulp-header": "1.8.8",
     "gulp-mocha": "3.0.1",
     "gulp-rename": "1.2.2",
