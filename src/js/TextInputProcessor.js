@@ -1,6 +1,17 @@
 import {resolveElement} from "./ElementUtils";
 import StringChangeDetector from "@convergence/string-change-detector";
 
+/**
+ * A helper class designed to enable processing of local and remote to an a HTMLInputElement
+ * or a HTMLTextAreaElement.
+ *
+ * @param options {{
+ *   element: string | HTMLInputElement | HTMLTextAreaElement
+ *   input: string
+ *   onInsert: Function
+ *   onRemove: Function
+ * }}
+ */
 export class TextInputProcessor {
   constructor(options) {
     const element = resolveElement(options.element);
