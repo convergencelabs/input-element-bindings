@@ -1,11 +1,17 @@
 import {resolveElement} from "./ElementUtils";
 import {TextInputProcessor} from "./TextInputProcessor";
 import {RealTimeString, RealTimeNumber, RealTimeBoolean} from "@convergence/convergence";
+import {TextInputUtils} from "./TextInputUtils";
 
 /**
- * @param textInput
+ * Binds a <input> element or a <textarea> element to a RealTimeString.
+ *
+ * @param textInput {HTMLInputElement | HTMLTextAreaElement}
+ *   The text input element to bind to the model.
  * @param stringElement {RealTimeString}
+ *   The RealTimeString element to bind to the input element
  * @returns {{unbind: (function())}}
+ *   An object containing an "unbind()" method that will unbid the input from the model.
  */
 export function bindTextInput(textInput, stringElement) {
   const element = resolveElement(textInput);
@@ -21,7 +27,10 @@ export function bindTextInput(textInput, stringElement) {
 
   const onRemoteInsert = event => {
     if (!event.local) {
+      const originalSelection = TextInputUtils.getTextSelection(element);
       processor.insertText(event.index, event.value);
+      const xFormedSelection = TextInputUtils.transformSelection(originalSelection, event);
+      TextInputUtils.setTextSelection(xFormedSelection, element);
     }
   };
 
@@ -29,7 +38,10 @@ export function bindTextInput(textInput, stringElement) {
 
   const onRemoteRemove = event => {
     if (!event.local) {
+      const originalSelection = TextInputUtils.getTextSelection(element);
       processor.removeText(event.index, event.value.length);
+      const xFormedSelection = TextInputUtils.transformSelection(originalSelection, event);
+      TextInputUtils.setTextSelection(xFormedSelection, element);
     }
   };
 
@@ -56,10 +68,14 @@ export function bindTextInput(textInput, stringElement) {
 }
 
 /**
+ * Binds an <input type="number"> element to a RealTimeNumber.
  *
  * @param numberInput {HTMLInputElement}
+ *   The input element to bind to the model.
  * @param numberElement {RealTimeNumber}
+ *   The RealTimeNumber to bind to the input element.
  * @returns {{unbind: (function())}}
+ *   An object containing an "unbind()" method that will unbid the input from the model.
  */
 export function bindNumberInput(numberInput, numberElement) {
   const element = resolveElement(numberInput);
@@ -92,9 +108,14 @@ export function bindNumberInput(numberInput, numberElement) {
 }
 
 /**
+ * Binds an <input type="checkbox"> element to a RealTimeBoolean.
  *
  * @param checkboxInput {HTMLInputElement}
+ *   The input element to bind to the model.
  * @param booleanElement {RealTimeBoolean}
+ *   The RealTimeBoolean to bind to the input element.
+ * @returns {{unbind: (function())}}
+ *   An object containing an "unbind()" method that will unbid the input from the model.
  */
 export function bindCheckboxInput(checkboxInput, booleanElement) {
   const element = resolveElement(checkboxInput);
@@ -120,10 +141,31 @@ export function bindCheckboxInput(checkboxInput, booleanElement) {
   };
 }
 
+/**
+ * Binds an <input type="range"> element to a RealTimeNumber.
+ *
+ * @param rangeInput {HTMLInputElement}
+ *   The input element to bind to the model.
+ * @param numberElement {RealTimeNumber}
+ *   The RealTimeNumber to bind to the input element.
+ * @returns {{unbind: (function())}}
+ *   An object containing an "unbind()" method that will unbid the input from the model.
+ */
 export function bindRangeInput(rangeInput, numberElement) {
   return bindNumberInput(rangeInput, numberElement);
 }
 
+
+/**
+ * Binds an <input type="color"> element to a RealTimeString.
+ *
+ * @param colorInput {HTMLInputElement}
+ *   The input element to bind to the model.
+ * @param stringElement {RealTimeString}
+ *   The RealTimeString to bind to the input element.
+ * @returns {{unbind: (function())}}
+ *   An object containing an "unbind()" method that will unbid the input from the model.
+ */
 export function bindColorInput(colorInput, stringElement) {
   const element = resolveElement(colorInput);
 
