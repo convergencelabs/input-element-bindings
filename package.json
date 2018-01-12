@@ -8,7 +8,7 @@
     "element",
     "bindings"
   ],
-  "version": "0.2.1",
+  "version": "0.3.0",
   "homepage": "http://convergencelabs.com",
   "author": {
     "name": "Convergence Labs, Inc.",
@@ -37,8 +37,10 @@
   "browser": "browser/convergence-input-element-bindings.js",
   "types": "types/index.d.ts",
   "dependencies": {
-    "@convergence/convergence": "1.0.0-alpha.6",
     "@convergence/string-change-detector": "0.1.1"
+  },
+  "peerDependencies": {
+    "@convergence/convergence": "^1.0.0-alpha.29"
   },
   "devDependencies": {
     "babel-eslint": "6.1.2",
