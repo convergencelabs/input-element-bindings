@@ -40,8 +40,8 @@ gulp.task('copy-files', ['build'], function () {
     .pipe(gulp.dest(distDir));
 });
 
-gulp.task('copy-types',  function () {
-  return gulp.src(["src/types/**/*"])
+gulp.task('copy-types', function () {
+  return gulp.src(["types/**/*"])
     .pipe(gulp.dest(distDir + "/types/"));
 });
 

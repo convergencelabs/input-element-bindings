@@ -79,7 +79,7 @@ export declare function bindColorInput(colorInput: HTMLInputElement, stringEleme
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export declare function bindSingleSelect(selectInput, stringElement: RealTimeString): ConvergenceDomBinding;
+export declare function bindSingleSelect(selectInput: HTMLSelectElement, stringElement: RealTimeString): ConvergenceDomBinding;
 
 /**
  * Binds an <select multiple> element to a RealTimeArray.
@@ -91,7 +91,7 @@ export declare function bindSingleSelect(selectInput, stringElement: RealTimeStr
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export declare function bindMultiSelect(selectInput, arrayElement: RealTimeArray): ConvergenceDomBinding;
+export declare function bindMultiSelect(selectInput: HTMLSelectElement, arrayElement: RealTimeArray): ConvergenceDomBinding;
 
 /**
  * Binds a set of <input type="radio"> elements to a RealTimeString.
