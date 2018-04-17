@@ -1,3 +1,13 @@
+import {
+  RealTimeArray,
+  RealTimeBoolean,
+  RealTimeNumber,
+  RealTimeString
+  } from '@convergence/convergence';
+
+export interface ConvergenceDomBinding {
+  unbind: () => void;
+}
 
 /**
  * Binds a <input> element or a <textarea> element to a RealTimeString.
@@ -9,7 +19,7 @@
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export declare function bindTextInput(textInput, stringElement);
+export declare function bindTextInput(textInput: HTMLInputElement | HTMLTextAreaElement, stringElement: RealTimeString): ConvergenceDomBinding;
 
 /**
  * Binds an <input type="number"> element to a RealTimeNumber.
@@ -21,7 +31,7 @@ export declare function bindTextInput(textInput, stringElement);
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export declare function bindNumberInput(numberInput, numberElement);
+export declare function bindNumberInput(numberInput: HTMLInputElement, numberElement: RealTimeNumber): ConvergenceDomBinding;
 
 /**
  * Binds an <input type="checkbox"> element to a RealTimeBoolean.
@@ -33,7 +43,7 @@ export declare function bindNumberInput(numberInput, numberElement);
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export declare function bindCheckboxInput(checkboxInput, booleanElement);
+export declare function bindCheckboxInput(checkboxInput: HTMLInputElement, booleanElement: RealTimeBoolean): ConvergenceDomBinding;
 
 /**
  * Binds an <input type="range"> element to a RealTimeNumber.
@@ -45,7 +55,7 @@ export declare function bindCheckboxInput(checkboxInput, booleanElement);
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export declare function bindRangeInput(rangeInput, numberElement);
+export declare function bindRangeInput(rangeInput: HTMLInputElement, numberElement: RealTimeNumber): ConvergenceDomBinding;
 
 /**
  * Binds an <input type="color"> element to a RealTimeString.
@@ -57,7 +67,7 @@ export declare function bindRangeInput(rangeInput, numberElement);
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export declare function bindColorInput(colorInput, stringElement);
+export declare function bindColorInput(colorInput: HTMLInputElement, stringElement: RealTimeString): ConvergenceDomBinding;
 
 /**
  * Binds an <select> element to a RealTimeString.
@@ -69,7 +79,7 @@ export declare function bindColorInput(colorInput, stringElement);
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export declare function bindSingleSelect(selectInput, stringElement);
+export declare function bindSingleSelect(selectInput, stringElement: RealTimeString): ConvergenceDomBinding;
 
 /**
  * Binds an <select multiple> element to a RealTimeArray.
@@ -81,7 +91,7 @@ export declare function bindSingleSelect(selectInput, stringElement);
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export declare function bindMultiSelect(selectInput, arrayElement);
+export declare function bindMultiSelect(selectInput, arrayElement: RealTimeArray): ConvergenceDomBinding;
 
 /**
  * Binds a set of <input type="radio"> elements to a RealTimeString.
@@ -93,4 +103,4 @@ export declare function bindMultiSelect(selectInput, arrayElement);
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export declare function bindRadioInputs(radioInputs, stringElement);
+export declare function bindRadioInputs(radioInputs: HTMLInputElement[], stringElement: RealTimeString): ConvergenceDomBinding;
