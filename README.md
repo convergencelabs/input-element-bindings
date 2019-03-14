@@ -33,6 +33,7 @@ You can [see it in action here](https://examples.convergence.io/input-elements/i
 <html>
 <head>
   <script src="http://localhost:8000/client/rxjs.umd.min.js" />
+  <script src="http://localhost:8000/client/convergence.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@convergence/input-element-bindings@0.3.4/browser/convergence-input-element-bindings.min.js" />
 </head>
 <body>
