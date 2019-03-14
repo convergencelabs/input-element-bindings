@@ -21,26 +21,25 @@ This module provides a set of utilities to bind plain HTML Input / Form Elements
   - &lt;input type="number" /&gt;
   - &lt;input type="range" /&gt;
 
+You can [see it in action here](https://examples.convergence.io/input-elements/index.html).
+
 ## Installation
-```npm install --save @convergence/input-element-bindings```
+```npm install @convergence/input-element-bindings```
 
-or
-
-```npm install --save-dev @convergence/input-element-bindings```
 
 ## Example Usage
 
 ```html
 <html>
 <head>
-  <script src="https://client.convergence.io/v1/convergence.js" language="JavaScript" />
-  <script src="https://client.convergence.io/libs/convergence-html-input-bindings.js" language="JavaScript" />
+  <script src="http://localhost:8000/client/rxjs.umd.min.js" />
+  <script src="https://cdn.jsdelivr.net/npm/@convergence/input-element-bindings@0.3.4/browser/convergence-input-element-bindings.min.js" />
 </head>
 <body>
   <input type="text" id="textInput" />
   
   <script>
-  const DOMAIN_URL = "https://api.convergence.io/realtime/domain/<username>/<domain-id>";
+  const DOMAIN_URL = "http://localhost:8000/realtime/domain/convergence/default";
   Convergence.connectAnonymously(DOMAIN_URL).then(function(domain) {
     return domain.models().open("input-binder", "test", function() {
       return { textInput: "textInput" };
@@ -56,9 +55,6 @@ or
 </body>
 </html>
 ```
-
-## Documentation
-For now the best way to see how to use the utility is to take a look at the [example](example).
 
 ## API
 ```javascript
