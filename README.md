@@ -32,9 +32,10 @@ You can [see it in action here](https://examples.convergence.io/input-elements/i
 ```html
 <html>
 <head>
-  <script src="http://localhost:8000/client/rxjs.umd.min.js" />
-  <script src="http://localhost:8000/client/convergence.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@convergence/input-element-bindings@0.3.4/umd/convergence-input-element-bindings.min.js" />
+  <script src="https://cdn.jsdelivr.net/npm/rxjs@6.6.2/bundles/rxjs.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@convergence/convergence/convergence.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@convergence/string-change-detector/browser/string-change-detector.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@convergence/input-element-bindings@0.3.4/umd/convergence-input-element-bindings.min.js"></script>
 </head>
 <body>
   <input type="text" id="textInput" disabled="disabled"/>
