@@ -31,7 +31,6 @@ export class TextInputUtils {
 
     if (element.setSelectionRange) {
       // IE >= 9 and other browsers
-      element.focus();
       element.setSelectionRange(start, end);
     } else if ((element as any).createTextRange) {
       // IE < 9
