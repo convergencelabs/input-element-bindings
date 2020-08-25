@@ -1,7 +1,21 @@
 import {resolveElement} from "./ElementUtils";
 import {TextInputProcessor} from "./TextInputProcessor";
-import {RealTimeString, RealTimeNumber, RealTimeBoolean} from "@convergence/convergence";
+import {
+  RealTimeString,
+  RealTimeNumber,
+  RealTimeBoolean,
+  StringInsertEvent,
+  StringRemoveEvent,
+  StringSetValueEvent,
+  NumberSetValueEvent,
+  NumberDeltaEvent,
+  BooleanSetValueEvent,
+  RealTimeArray,
+  ArraySetValueEvent
+} from "@convergence/convergence";
 import {TextInputUtils} from "./TextInputUtils";
+import {TextInputElement} from "./TextInputElement";
+import {IConvergenceDomBinding} from "./IConvergenceDomBinding";
 
 /**
  * Binds a <input> element or a <textarea> element to a RealTimeString.
@@ -13,8 +27,8 @@ import {TextInputUtils} from "./TextInputUtils";
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export function bindTextInput(textInput, stringElement) {
-  const element = resolveElement(textInput);
+export function bindTextInput(textInput: string | TextInputElement, stringElement: RealTimeString): IConvergenceDomBinding {
+  const element = resolveElement(textInput) as HTMLInputElement;
 
   element.value = stringElement.value();
 
@@ -25,9 +39,10 @@ export function bindTextInput(textInput, stringElement) {
     onRemove: (index, length) => stringElement.remove(index, length)
   });
 
-  const onRemoteInsert = event => {
+  const onRemoteInsert = (event: StringInsertEvent) => {
     if (!event.local) {
       const originalSelection = TextInputUtils.getTextSelection(element);
+      console.log(originalSelection);
       processor.insertText(event.index, event.value);
       const xFormedSelection = TextInputUtils.transformSelection(originalSelection, event);
       TextInputUtils.setTextSelection(xFormedSelection, element);
@@ -36,7 +51,7 @@ export function bindTextInput(textInput, stringElement) {
 
   stringElement.on(RealTimeString.Events.INSERT, onRemoteInsert);
 
-  const onRemoteRemove = event => {
+  const onRemoteRemove = (event: StringRemoveEvent) => {
     if (!event.local) {
       const originalSelection = TextInputUtils.getTextSelection(element);
       processor.removeText(event.index, event.value.length);
@@ -47,8 +62,8 @@ export function bindTextInput(textInput, stringElement) {
 
   stringElement.on(RealTimeString.Events.REMOVE, onRemoteRemove);
 
-  const onRemoteValue = event => {
-    if (!event.local) processor.setValue(event.value);
+  const onRemoteValue = (event: StringSetValueEvent) => {
+    if (!event.local) processor.setValue(event.element.value());
   };
 
   stringElement.on(RealTimeString.Events.VALUE, onRemoteValue);
@@ -77,20 +92,20 @@ export function bindTextInput(textInput, stringElement) {
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export function bindNumberInput(numberInput, numberElement) {
-  const element = resolveElement(numberInput);
+export function bindNumberInput(numberInput: string | HTMLInputElement, numberElement: RealTimeNumber): IConvergenceDomBinding {
+  const element = resolveElement(numberInput) as HTMLInputElement;
 
-  element.value = numberElement.value();
-  const onChange = event => numberElement.value(Number(numberInput.value));
+  element.value = String(numberElement.value());
+  const onChange = () => numberElement.value(Number(element.value));
   element.addEventListener("input", onChange, false);
 
-  const onRemoteValue = event => {
-    if (!event.local) numberInput.value = event.element.value();
+  const onRemoteValue = (event: NumberSetValueEvent) => {
+    if (!event.local) element.value = String(event.element.value());
   };
   numberElement.on(RealTimeNumber.Events.VALUE, onRemoteValue);
 
-  const onRemoteDelta = event => {
-    if (!event.local) numberInput.value = Number(numberInput.value) + event.value;
+  const onRemoteDelta = (event: NumberDeltaEvent) => {
+    if (!event.local) element.value = String(Number(element.value) + event.value);
   };
   numberElement.on(RealTimeNumber.Events.DELTA, onRemoteDelta);
 
@@ -117,20 +132,20 @@ export function bindNumberInput(numberInput, numberElement) {
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export function bindCheckboxInput(checkboxInput, booleanElement) {
-  const element = resolveElement(checkboxInput);
+export function bindCheckboxInput(checkboxInput: string | HTMLInputElement, booleanElement: RealTimeBoolean): IConvergenceDomBinding {
+  const element = resolveElement(checkboxInput) as HTMLInputElement;
 
   element.checked = booleanElement.value();
-  const onChange = event => booleanElement.value(element.checked);
-  checkboxInput.addEventListener("change", onChange, false);
+  const onChange = () => booleanElement.value(element.checked);
+  element.addEventListener("change", onChange, false);
 
-  const onRemoteValue = event => {
-    if (!event.local) checkboxInput.checked = event.element.value();
+  const onRemoteValue = (event: BooleanSetValueEvent) => {
+    if (!event.local) element.checked = event.element.value();
   };
   booleanElement.on(RealTimeBoolean.Events.VALUE, onRemoteValue);
 
   const unbind = () => {
-    checkboxInput.removeEventListener("change", onChange);
+    element.removeEventListener("change", onChange);
     booleanElement.off(RealTimeBoolean.Events.VALUE, onRemoteValue);
   };
 
@@ -151,7 +166,7 @@ export function bindCheckboxInput(checkboxInput, booleanElement) {
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export function bindRangeInput(rangeInput, numberElement) {
+export function bindRangeInput(rangeInput: string | HTMLInputElement, numberElement: RealTimeNumber): IConvergenceDomBinding {
   return bindNumberInput(rangeInput, numberElement);
 }
 
@@ -165,16 +180,16 @@ export function bindRangeInput(rangeInput, numberElement) {
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export function bindColorInput(colorInput, stringElement) {
-  const element = resolveElement(colorInput);
+export function bindColorInput(colorInput: string | HTMLInputElement, stringElement: RealTimeString): IConvergenceDomBinding {
+  const element = resolveElement(colorInput) as HTMLInputElement;
 
   element.value = stringElement.value();
 
-  const onChange = event => stringElement.value(colorInput.value);
+  const onChange = () => stringElement.value(element.value);
   element.addEventListener("input", onChange, false);
 
-  const onRemoteValue = event => {
-    if (!event.local) colorInput.value = event.element.value();
+  const onRemoteValue = (event: StringSetValueEvent) => {
+    if (!event.local) element.value = event.element.value();
   };
   stringElement.on(RealTimeNumber.Events.VALUE, onRemoteValue);
 
@@ -200,16 +215,16 @@ export function bindColorInput(colorInput, stringElement) {
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export function bindSingleSelect(selectInput, stringElement) {
-  const element = resolveElement(selectInput);
+export function bindSingleSelect(selectInput: string | HTMLSelectElement, stringElement: RealTimeString): IConvergenceDomBinding {
+  const element = resolveElement(selectInput) as HTMLSelectElement;
 
   element.value = stringElement.value();
 
-  const onChange = event => stringElement.value(selectInput.value);
+  const onChange = () => stringElement.value(element.value);
   element.addEventListener("input", onChange, false);
 
-  const onRemoteValue = event => {
-    if (!event.local) selectInput.value = event.element.value();
+  const onRemoteValue = (event: StringSetValueEvent) => {
+    if (!event.local) element.value = event.element.value();
   };
   stringElement.on(RealTimeNumber.Events.VALUE, onRemoteValue);
 
@@ -235,23 +250,23 @@ export function bindSingleSelect(selectInput, stringElement) {
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export function bindMultiSelect(selectInput, arrayElement) {
-  const element = resolveElement(selectInput);
+export function bindMultiSelect(selectInput: string | HTMLSelectElement, arrayElement: RealTimeArray): IConvergenceDomBinding {
+  const element = resolveElement(selectInput) as HTMLSelectElement;
 
   const selectItems = () => {
     const selected = arrayElement.value();
-    for (let i = 0; i < selectInput.options.length; i++) {
-      const option = selectInput.options[i];
+    for (let i = 0; i < element.options.length; i++) {
+      const option = element.options[i];
       option.selected = selected.indexOf(option.value) >= 0;
     }
   };
 
   selectItems();
 
-  const onChange = event => {
+  const onChange = () => {
     const selected = [];
-    for (let i = 0; i < selectInput.options.length; i++) {
-      const option = selectInput.options[i];
+    for (let i = 0; i < element.options.length; i++) {
+      const option = element.options[i];
       if (option.selected) {
         selected.push(option.value);
       }
@@ -260,7 +275,7 @@ export function bindMultiSelect(selectInput, arrayElement) {
   };
   element.addEventListener("input", onChange, false);
 
-  const onRemoteValue = event => {
+  const onRemoteValue = (event: ArraySetValueEvent) => {
     if (!event.local) selectItems();
   };
   arrayElement.on(RealTimeNumber.Events.VALUE, onRemoteValue);
@@ -287,19 +302,19 @@ export function bindMultiSelect(selectInput, arrayElement) {
  * @returns {{unbind: (function())}}
  *   An object containing an "unbind()" method that will unbid the input from the model.
  */
-export function bindRadioInputs(radioInputs, stringElement) {
-  const elements = radioInputs.map(input => resolveElement(input));
+export function bindRadioInputs(radioInputs: (string | HTMLInputElement)[], stringElement: RealTimeString): IConvergenceDomBinding {
+  const elements = radioInputs.map((input: string | HTMLInputElement )  => resolveElement(input) as HTMLInputElement);
 
   const selectItems = () => {
     const selected = stringElement.value();
-    radioInputs.forEach(input => input.checked = input.value === selected);
+    elements.forEach(input => input.checked = input.value === selected);
   };
 
   selectItems();
 
-  const onChange = event => {
+  const onChange = () => {
     let set = false;
-    radioInputs.forEach(input => {
+    elements.forEach(input => {
       if (input.checked) {
         stringElement.value(input.value);
         set = true;
@@ -312,7 +327,7 @@ export function bindRadioInputs(radioInputs, stringElement) {
 
   elements.forEach(element => element.addEventListener("change", onChange, false));
 
-  const onRemoteValue = event => {
+  const onRemoteValue = (event: StringSetValueEvent) => {
     if (!event.local) selectItems();
   };
   stringElement.on(RealTimeNumber.Events.VALUE, onRemoteValue);

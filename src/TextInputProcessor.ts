@@ -1,5 +1,7 @@
 import {resolveElement} from "./ElementUtils";
 import StringChangeDetector from "@convergence/string-change-detector";
+import {ITextInputProcessorOptions} from "./ITextInputProcessorOptions";
+import {TextInputElement} from "./TextInputElement";
 
 /**
  * A helper class designed to enable processing of local and remote to an a HTMLInputElement
@@ -13,7 +15,11 @@ import StringChangeDetector from "@convergence/string-change-detector";
  * }}
  */
 export class TextInputProcessor {
-  constructor(options) {
+  private readonly _input: TextInputElement;
+  private readonly _event: string;
+  private readonly _detector: StringChangeDetector;
+
+  constructor(options: ITextInputProcessorOptions) {
     const element = resolveElement(options.element);
 
     if (element instanceof HTMLInputElement) {
@@ -36,35 +42,34 @@ export class TextInputProcessor {
       onInsert: options.onInsert,
       onRemove: options.onRemove
     });
-    this._listener = this._onEvent.bind(this);
 
     this.bind();
   }
 
   bind() {
-    this._input.addEventListener(this._event, this._listener);
+    this._input.addEventListener(this._event, this._onEvent);
   }
 
   unbind() {
-    this._input.removeEventListener(this._event, this._listener);
+    this._input.removeEventListener(this._event, this._onEvent);
   }
 
-  insertText(index, value) {
+  insertText(index: number, value: string) {
     this._detector.insertText(index, value);
     this._input.value = this._detector.getValue();
   }
 
-  removeText(index, length) {
+  removeText(index: number, length: number) {
     this._detector.removeText(index, length);
     this._input.value = this._detector.getValue();
   }
 
-  setValue(value) {
+  setValue(value: string) {
     this._input.value = value;
     this._detector.setValue(value);
   }
 
-  _onEvent() {
+  _onEvent = () => {
     this._detector.processNewValue(this._input.value);
   }
 }

@@ -2,12 +2,15 @@ import {
   StringInsertEvent,
   StringRemoveEvent
 } from "@convergence/convergence";
+import {TextInputElement} from "./TextInputElement";
+import {ISelection} from "./ISelection";
+import {IValueChangedEvent} from "@convergence/convergence/typings/model/events/IValueChangedEvent";
 
 export class TextInputUtils {
-  static getTextSelection(element) {
-    if (document.selection) {
+  static getTextSelection(element: TextInputElement): ISelection {
+    if ((document as any).selection) {
       // IE < 9 Support
-      const range = document.selection.createRange();
+      const range = (document as any).selection.createRange();
       const rangeLen = range.text.length;
       range.moveStart('character', -element.value.length);
       const start = range.text.length - rangeLen;
@@ -22,7 +25,7 @@ export class TextInputUtils {
     return {'start': 0, 'end': 0};
   }
 
-  static setTextSelection(selection, element) {
+  static setTextSelection(selection: ISelection, element: TextInputElement) {
     const start = selection.start;
     const end = selection.end;
 
@@ -30,9 +33,9 @@ export class TextInputUtils {
       // IE >= 9 and other browsers
       element.focus();
       element.setSelectionRange(start, end);
-    } else if (element.createTextRange) {
+    } else if ((element as any).createTextRange) {
       // IE < 9
-      const range = element.createTextRange();
+      const range = (element as any).createTextRange();
       range.collapse(true);
       range.moveEnd('character', end);
       range.moveStart('character', start);
@@ -40,14 +43,14 @@ export class TextInputUtils {
     }
   }
 
-  static transformSelection(selection, event) {
+  static transformSelection(selection: ISelection, event: IValueChangedEvent) {
     return {
       start: TextInputUtils.transformIndex(selection.start, event),
       end: TextInputUtils.transformIndex(selection.end, event)
     };
   }
 
-  static transformIndex(index, event) {
+  static transformIndex(index: number, event: IValueChangedEvent) {
     if (event instanceof StringInsertEvent) {
       if (event.index <= index) {
         return index + event.value.length;

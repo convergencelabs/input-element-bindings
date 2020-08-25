@@ -7,9 +7,9 @@ This module provides a set of utilities to bind plain HTML Input / Form Elements
   * &lt;input type="text" /&gt;
   * &lt;input type="password" /&gt;
   * &lt;input type="email" /&gt;
-  - &lt;input type="url" /&gt;
-  - &lt;input type="search" /&gt;
-  - &lt;textarea /&gt;
+  * &lt;input type="url" /&gt;
+  * &lt;input type="search" /&gt;
+  * &lt;textarea /&gt;
 - Radio Buttons
   - &lt;input type="radio" /&gt;
 - Select Elements
@@ -34,24 +34,32 @@ You can [see it in action here](https://examples.convergence.io/input-elements/i
 <head>
   <script src="http://localhost:8000/client/rxjs.umd.min.js" />
   <script src="http://localhost:8000/client/convergence.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@convergence/input-element-bindings@0.3.4/browser/convergence-input-element-bindings.min.js" />
+  <script src="https://cdn.jsdelivr.net/npm/@convergence/input-element-bindings@0.3.4/umd/convergence-input-element-bindings.min.js" />
 </head>
 <body>
-  <input type="text" id="textInput" />
+  <input type="text" id="textInput" disabled="disabled"/>
   
   <script>
   const DOMAIN_URL = "http://localhost:8000/realtime/domain/convergence/default";
-  Convergence.connectAnonymously(DOMAIN_URL).then(function(domain) {
-    return domain.models().open("input-binder", "test", function() {
-      return { textInput: "textInput" };
-    });
-  }).then(function(model) {
-    const textInput = document.getElementById("textInput");
-    const realTimeString = model.elementAt("textInput");
-    ConvergenceInputElementBinder.bindTextInput(textInput, realTimeString);
-  }).catch(function(error) {
-    console.error(error);
-  });
+  Convergence.connectAnonymously(DOMAIN_URL)
+      .then((domain) => {
+          return domain.models().openAutoCreate({
+              collection: "input-binder",
+              id: "example",
+              data: () => {
+                  return {textInput: "Text to collaborate on"};
+              }
+          });
+      })
+      .then((model) => {
+          const textInput = document.getElementById("textInput");
+          textInput.disabled = false;
+          const realTimeString = model.elementAt("textInput");
+          ConvergenceInputElementBinder.bindTextInput(textInput, realTimeString);
+      })
+      .catch((error) => {
+          console.error(error);
+      });
   </script>
 </body>
 </html>
