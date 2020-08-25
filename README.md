@@ -34,7 +34,7 @@ You can [see it in action here](https://examples.convergence.io/input-elements/i
 <head>
   <script src="https://cdn.jsdelivr.net/npm/rxjs@6.6.2/bundles/rxjs.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@convergence/convergence/convergence.global.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@convergence/string-change-detector/browser/string-change-detector.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@convergence/string-change-detector/browser/string-change-detector.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@convergence/input-element-bindings@0.3.4/umd/convergence-input-element-bindings.min.js"></script>
 </head>
 <body>
@@ -65,6 +65,8 @@ You can [see it in action here](https://examples.convergence.io/input-elements/i
 </body>
 </html>
 ```
+
+You can find a working example in the [example](example) directory.
 
 ## API
 ```javascript
