@@ -1,5 +1,6 @@
 # Convergence Input Element Bindings
-[![Build Status](https://travis-ci.org/convergencelabs/input-element-bindings.svg?branch=master)](https://travis-ci.org/convergencelabs/input-element-bindings)
+[![Build](https://github.com/convergencelabs/input-element-bindings/actions/workflows/build.yml/badge.svg)](https://github.com/convergencelabs/input-element-bindings/actions/workflows/build.yml)
+
 
 This module provides a set of utilities to bind plain HTML Input / Form Elements to a Convergence model. The module provides simple two way data binding between the HTML input element and a particular field in the Convergence data model. The module currently supports the following input elements:
 
