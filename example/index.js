@@ -1,3 +1,5 @@
+//
+// Replace this url with the url to your Convergence Server
 const BASE_URL = "http://localhost:8080";
 
 const DOMAIN = "convergence/default";
