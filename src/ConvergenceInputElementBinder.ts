@@ -42,7 +42,6 @@ export function bindTextInput(textInput: string | TextInputElement, stringElemen
   const onRemoteInsert = (event: StringInsertEvent) => {
     if (!event.local) {
       const originalSelection = TextInputUtils.getTextSelection(element);
-      console.log(originalSelection);
       processor.insertText(event.index, event.value);
       const xFormedSelection = TextInputUtils.transformSelection(originalSelection, event);
       TextInputUtils.setTextSelection(xFormedSelection, element);

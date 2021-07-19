@@ -1,6 +1,6 @@
 {
   "name": "@convergence/input-element-bindings",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "title": "Convergence Input Element Bindings",
   "description": "Helper utilities to bind Convergence data to HTML Input Elements.",
   "keywords": [
